@@ -1,17 +1,14 @@
-@@ -3,21 +3,37 @@ from random import *
+from graphics import *
+from random import *
 from math import *
 
 def colors(n):
-	ret = []
 	col = []
 	for i in range(1, n+1):
-		ret.append(color_rgb(randint(0,255), randint(0,255), randint(0,255)))
 		col.append(color_rgb(randint(0,255), randint(0,255), randint(0,255)))
 
-	return ret
 	return col
 
-def find_min(x, y, list_points):
 def first_min(arr1):
 	min1 = min(arr1)
 	# print(min1)
@@ -29,30 +26,66 @@ def second_min(arr2):
 def min_index(x, y, list_points):
 	list_min = []
 	for i in list_points:
-		dif_x = i.getX()
-		dif_y = i.getY()
 		dif_x = i.getX() - x
 		dif_y = i.getY() - y
 		c = sqrt(dif_y**2 + dif_x**2)
 		# print(c)
 		list_min.append(c)
 
-	return list_min.index(min(list_min))
 	# print(list_min)
 	return list_min
 
 
 def sq_multiples(num):
-@ -42,7 +58,7 @@ def sq_multiples(num):
+	div_list = []
+	for a in range(1, num+1):
+		b = num % a
+		if b == 0:
+			div_list.append(a)
+
+	if len(div_list) % 2 == 0:
+		median = 2
+	else:
+		median = 1
+
+	while len(div_list) != median:
+		n = len(div_list)
+		del div_list[n-1]
+		del div_list[0]
+
+	if median == 1:
+		div_list.append(div_list[0])
 
 	return div_list
 
-def random_plot(sq_size, num_points = 1):
 def random_plot(sq_size, num_points = 1, bor_size = 0, alpha = 0):
 	# try:
 	win = GraphWin("Voronoi Diagram", sq_size, sq_size)
 	list_points = []
-@ -73,14 +89,32 @@ def random_plot(sq_size, num_points = 1):
+	# grid = []
+	# for l in range(1,3):
+	# 	grid.append(Line(Point(l*(sq_size/num_points),0),Point(l*(sq_size/num_points),sq_size)))
+	# 	grid.append(Line(Point(0,l*(sq_size/num_points)),Point(sq_size,l*(sq_size/num_points))))
+	# for l_num in grid:
+	# 	l_num.draw(win)
+	spaceX = int(sq_size/sq_multiples(num_points)[0])
+	spaceY = int(sq_size/sq_multiples(num_points)[1])
+	x = 0
+	y = 0
+	initial = 0
+	finalX = spaceX
+	finalY = spaceY
+	for i in range(1,num_points+1):
+		list_points.append(Point(randint(initial+x,finalX+x),randint(initial+y,finalY+y)))
+		# print(str(x) + ", " + str(y))
+		if x < (sq_size-spaceX):
+			x += spaceX
+		else:
+			y += spaceY
+			x = 0
+	
+	# except ValueError:
+	# 	print("Value error detected. Plot size must be divisble by the number of points.")
 
 	# Voronoi plot
 	list_colored_points = []
@@ -61,7 +94,6 @@ def random_plot(sq_size, num_points = 1, bor_size = 0, alpha = 0):
 	print(list_points)
 	for intervalX in range(1, sq_size + 1):
 		for intervalY in range(1, sq_size + 1):
-			win.plotPixel(intervalX, intervalY, (colors(len(list_points))[find_min(intervalX, intervalY, list_points)]))
 			min_index_list = min_index(intervalX, intervalY, list_points)
 			min_num_1 = first_min(min_index_list)
 			min_index_1 = min_index_list.index(min_num_1)
@@ -83,7 +115,6 @@ def random_plot(sq_size, num_points = 1, bor_size = 0, alpha = 0):
 	win.close()
 
 def main():
-	random_plot(540,12)
 	random_plot(500,10,10)
 
 main()
