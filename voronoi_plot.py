@@ -1,3 +1,7 @@
+# Created by Vasant Kurvari
+# Begun: 05/25/19
+# Last Update: 05/26/19
+
 from graphics import *
 from random import *
 from math import *
@@ -103,7 +107,7 @@ def random_plot(sq_size, num_points = 1, bor_size = 0, alpha = 0):
 			# win.plotPixel(intervalX, intervalY, color_list[min_index_1])
 
 			# Border & Alpha Additions
-			if min_dist > bor_size:
+			if min_dist > bor_size/2:
 				win.plotPixel(intervalX, intervalY, color_list[min_index_1])
 			else:
 				win.plotPixel(intervalX, intervalY, "black")
@@ -115,6 +119,6 @@ def random_plot(sq_size, num_points = 1, bor_size = 0, alpha = 0):
 	win.close()
 
 def main():
-	random_plot(500,10,10)
+	random_plot(700,50,2)
 
 main()
